@@ -21,7 +21,7 @@
                                     <td style="line-height:12pt; height:10px;">
                                         <span class="pagetop">
                                             <b class="hnname">
-                                                <a href="/exhibition/">stuff.co.nz</a>
+                                                <a href="/">stuff.co.nz</a>
                                             </b>
                                             <a href="newest">new</a> | <a href="newcomments">comments</a> | <a href="positive">most positive</a> | <a href="negative">most negative</a> | <font color="#000000">{{ user.name }}'s comments</font>
                                         </span>
@@ -43,7 +43,7 @@
                     <td>
                         <table border="0">
                             <tr>
-                                <td class="ind"><img src="s.gif" height="1" width="0"></td>
+                                <td class="ind"><img src="/static/s.gif" height="1" width="0"></td>
                                 <td valign="top" class="votelinks">
                                     <center>
                                         <a id="up_123" href="#">
@@ -54,8 +54,8 @@
                                 <td class="default">
                                     <div style="margin-top:2px; margin-bottom:-10px;">
                                         <span class="comhead">
-                                            <a href="/exhibition/user/{{ comment.author.uid }}">{{ comment.author.name }}</a>
-                                            <span class="age"><a href="/exhibition/article/{{ comment.article.ident }}">3 hours ago</a></span>
+                                            <a href="/user/{{ comment.author.uid }}">{{ comment.author.name }}</a>
+                                            <span class="age"><a href="/article/{{ comment.article.ident }}">3 hours ago</a></span>
                                             <a class="togg" n="11" href="javascript:void(0)" onclick="return toggle(event, 18836967)">[-]</a>
                                             <span class="storyon"></span>
                                         </span>
@@ -83,7 +83,7 @@
                 {% endfor %}
                 <tr>
                     <td>
-                        <img src="s.gif" height="10" width="0">
+                        <img src="/static/s.gif" height="10" width="0">
                         <table width="100%" cellspacing="0" cellpadding="1">
                             <tbody>
                                 <tr>

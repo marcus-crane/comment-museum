@@ -21,7 +21,7 @@
                                     <td style="line-height:12pt; height:10px;">
                                         <span class="pagetop">
                                             <b class="hnname">
-                                                <a href="/exhibition/">stuff.co.nz</a>
+                                                <a href="/">stuff.co.nz</a>
                                             </b>
                                             <a href="newest">new</a> | <a href="newcomments">comments</a> | <a href="positive">most positive</a> | <a href="negative">most negative</a>
                                         </span>
@@ -43,7 +43,7 @@
                             <tbody>
                                 <tr class="athing">
                                     <td valign="top">user:</td>
-                                    <td timestamp="123"><a href="/exhibition/user/{{ user.uid }}" class="hnuser">{{ user.name }}</td>
+                                    <td timestamp="123"><a href="/user/{{ user.uid }}" class="hnuser">{{ user.name }}</td>
                                 </tr>
                                 <tr>
                                     <td valign="top">provider:</td>
@@ -51,7 +51,7 @@
                                 </tr>
                                 <tr>
                                     <td valign="top">karma:</td>
-                                    <td>0</td>
+                                    <td>{{ karma }}</td>
                                 </tr>
                                 <tr>
                                     <td valign="top">about:</td>
@@ -60,7 +60,7 @@
                                 <tr>
                                     <td></td>
                                     <td>
-                                        <a href="/exhibition/threads/{{ user.uid }}">
+                                        <a href="/threads/{{ user.uid }}">
                                             <u>comments</u>
                                         </a>
                                     </td>

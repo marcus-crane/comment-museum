@@ -1,3 +1,4 @@
+from django.db.models import Sum
 from django.views import generic
 from django.shortcuts import render
 
@@ -19,7 +20,8 @@ class ArticleListView(generic.ListView):
 
 def UserDetailView(request, **kwargs):
     data = {
-        "user": User.objects.get(pk=kwargs.get('uid'))
+        "user": User.objects.get(pk=kwargs.get('uid')),
+        "karma": Comment.objects.filter(author__pk=kwargs.get('uid')).aggregate(karma=Sum('total_votes'))['karma']
     }
     return render(request, 'exhibition/user_detail.html', data)
 
