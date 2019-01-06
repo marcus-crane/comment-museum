@@ -21,8 +21,9 @@ def fetch_streams():
                 comment_count=stream.get('commentCount'),
                 published=created_ts,
             )
+            print(f"Imported {stream.get('streamTitle')}")
         except:
-            print(f"Article already exists, skipping {stream.get('streamID')}")
+            pass
 
 @shared_task
 def fetch_comments():
@@ -36,7 +37,6 @@ def fetch_comments():
             if sender['name'] == '[removed]' or comment['status'] == 'deleted':
                 print('Skipping deleted thread')
                 continue
-            print(f"comment by {sender['UID']}: {sender['name']}")
             try:
                 user = User.objects.get(pk=sender['UID'])
             except:
@@ -50,15 +50,19 @@ def fetch_comments():
                 )
             created_ms = comment.get('timestamp') / 1000
             created_ts = pendulum.from_timestamp(created_ms, 'NZ').to_w3c_string()
-            Comment.objects.create(
-                ident=comment.get('ID'),
-                article=stream,
-                thread_id=comment.get('threadID', False),
-                parent_id=comment.get('parentID', False),
-                body=comment.get('commentText'),
-                total_votes=comment.get('TotalVotes'),
-                upvotes=comment.get('posVotes'),
-                downvotes=comment.get('negVotes'),
-                created=created_ts,
-                author=user
-            )
+            try:
+                Comment.objects.get(pk=comment.get('ID'))
+            except:
+                print(f"Importing {comment.get('ID')}")
+                Comment.objects.create(
+                    ident=comment.get('ID'),
+                    article=stream,
+                    thread_id=comment.get('threadID', False),
+                    parent_id=comment.get('parentID', False),
+                    body=comment.get('commentText'),
+                    total_votes=comment.get('TotalVotes'),
+                    upvotes=comment.get('posVotes'),
+                    downvotes=comment.get('negVotes'),
+                    created=created_ts,
+                    author=user
+                )
