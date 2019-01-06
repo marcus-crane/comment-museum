@@ -1,3 +1,4 @@
+{% load time_tags %}
 <html op="item">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -52,13 +53,18 @@
                                             </a>
                                         </center>
                                     </td>
-                                    <td class="title"><a href="{{ article.url }}" class="storyline">{{ article.title }}</a><span class="sitebit comhead">(<a href="{{ article.url }}"><span class="sitestr">https://stuff.co.nz</span></a>)</span></td>
+                                    <td class="title">
+                                        <a href="{{ article.url }}" class="storyline">{{ article.title }}</a>
+                                        <span class="sitebit comhead">
+                                            (<a href="{{ article.url }}"><span class="sitestr">https://stuff.co.nz</span></a>)
+                                        </span>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td colspan="2"></td>
                                     <td class="subtext">
                                         <span class="score" id="score">??? points</span> by <a href="#" class="hnuser">stuff.co.nz</a></span>
-                                        <span class="age"><a href="#">1 day ago</a></span> | <a href="#">hide</a> | <a href="#">past</a> | <a href="#">web</a> | <a href="#">favourite</a> | <a href="/article/{{ article.ident }}">{{ article.comment_count }} comments</a></span>
+                                        <span class="age"><a href="{{ article.url }}">{{ article.published | timesince | hours_only }} ago</a></span> | <a href="#">hide</a> | <a href="/article/{{ article.ident }}">{{ article.comment_count }} comments</a></span>
                                     </td>
                                 </tr>
                                 <tr style="height:10px"></tr>

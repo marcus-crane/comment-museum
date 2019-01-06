@@ -14,9 +14,18 @@ def ArticleDetailView(request, **kwargs):
 class ArticleListView(generic.ListView):
     template_name = 'exhibition/article_list.html'
     context_object_name = 'articles'
+    paginate_by = 30
 
     def get_queryset(self):
-        return Article.objects.order_by('-published')[:30]
+        return Article.objects.order_by('-published')
+
+class PositiveArticleListView(generic.ListView):
+    template_name = 'exhibition/article_list.html'
+    context_object_name = 'articles'
+    paginate_by = 30
+
+    def get_queryset(self):
+        return Article.objects.order_by('-comment_count')
 
 def UserDetailView(request, **kwargs):
     data = {

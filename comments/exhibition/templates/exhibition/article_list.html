@@ -24,7 +24,7 @@
                                             <b class="hnname">
                                                 <a href="/">stuff.co.nz</a>
                                             </b>
-                                            <a href="newest">new</a> | <a href="newcomments">comments</a> | <a href="positive">most positive</a> | <a href="negative">most negative</a>
+                                            <a href="newest">new</a> | <a href="newcomments">comments</a> | <a href="/positive">most positive</a> | <a href="/negative">most negative</a>
                                         </span>
                                     </td>
                                     <td style="text-align:right;padding-right:4px;">
@@ -45,7 +45,7 @@
                                 {% for article in articles %}
                                 <tr class="athing" id="123">
                                     <td align="right" valign="top" class="title">
-                                        <span class="rank">{{ forloop.counter }}.</span>
+                                        <span class="rank">{{ forloop.counter0 | add:page_obj.start_index }}.</span>
                                     </td>
                                     <td valign="top" class="votelinks">
                                         <center>
@@ -71,12 +71,14 @@
                                 <tr class="spacer" style="height:5px"></tr>
                                 {% endfor %}
                                 <tr class="morespace" style="height:10px"></tr>
+                                {% if page_obj.has_next %}
                                 <tr>
                                     <td colspan="2"></td>
                                     <td class="title">
-                                        <a href="#" class="morelink" rel="nofollow">More</a>
+                                        <a href="?page={{ page_obj.next_page_number}}" class="morelink" rel="nofollow">More</a>
                                     </td>
                                 </tr>
+                                {% endif %}
                             </tbody>
                         </table>
                     </td>
