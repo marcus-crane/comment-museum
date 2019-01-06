@@ -35,7 +35,7 @@ class User(models.Model):
     name = models.CharField(max_length=100)
     url = models.URLField()
     login_provider = models.CharField(max_length=40)
-    moderator= models.BooleanField(default=False)
+    moderator = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
