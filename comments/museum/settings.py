@@ -116,6 +116,8 @@ USE_L10N = True
 
 USE_TZ = True
 
+# Celery
+CELERY_BROKER_URL = 'amqp://rabbitmq'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
@@ -125,6 +127,7 @@ STATIC_URL = '/static/'
 # Gigya constants
 API_BASE = "https://comments.us1.gigya.com"
 API_KEY = "APIKey=3_9JitkeW_HEZvUcTSahg2tBTNm_psp2j-F58dCHDCilHVDYpGUAnC0vHmZMfro1_V"
+ARCHIVE_URL = "https://www.stuff.co.nz/archive/{0}?page={1}"
 
 CATEGORY_ID = "categoryID=Stuff"
 COMMENT_FORMAT = "format=json"

@@ -4,4 +4,6 @@ ADD requirements.txt /app/requirements.txt
 
 WORKDIR /app
 
+RUN pip install -U pip
+
 RUN pip install -r requirements.txt

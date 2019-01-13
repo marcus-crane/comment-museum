@@ -3,8 +3,15 @@ from django.conf import settings
 import os
 import requests
 import pendulum
+from bs4 import BeautifulSoup
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'museum.settings')
+
+import django
+django.setup()
 
 from archival.models import Article, Comment, User
+
 
 @shared_task
 def fetch_streams():
@@ -21,22 +28,54 @@ def fetch_streams():
                 comment_count=stream.get('commentCount'),
                 published=created_ts,
             )
-            print(f"Imported {stream.get('streamTitle')}")
         except:
             pass
+
+@shared_task
+def fetch_articles(date):
+    results = []
+    def query_page(date, page=1):
+        r = requests.get(settings.ARCHIVE_URL.format(date, page))
+        soup = BeautifulSoup(r.text, 'html.parser')
+        links = soup.find_all("p", class_="archive-listing-item")
+        for link in links:
+            results.append(link.a['href'])
+        paginator = soup.find('div', 'archive-listing-bottom')
+        if 'Next' in paginator.find_all('span')[-1].get_text():
+            query_page(date, page+1)
+    query_page(date)
+    for result in results:
+        metadata = determine_metadata(result)
+        
+    
+def determine_metadata(link):
+    body = link.replace('https://www.stuff.co.nz', '').replace('https://i.stuff.co.nz', '')
+    metadata = body.split('/')[1:-1]
+    if len(metadata) == 2:
+        print({'category': metadata[0], 'ident': metadata[1]})
+    if len(metadata) == 3:
+        print({'category': metadata[0], 'bicategory': metadata[1], 'ident': metadata[2]})
+    if len(metadata) == 4:
+        print({'category': metadata[0], 'bicategory': metadata[1], 'tricategory': metadata[2], 'ident': metadata[3]})
+
 
 @shared_task
 def fetch_comments():
     streams = Article.objects.order_by('-updated')
     for stream in streams:
-        print(f'Starting {stream.title}')
         r = requests.get(settings.COMMENTS_URL.format(stream.ident))
         data = r.json()
         for comment in data['comments']:
             sender = comment['sender']
             if sender['name'] == '[removed]' or comment['status'] == 'deleted':
-                print('Skipping deleted thread')
-                continue
+                try:
+                    del_comment = Comment.objects.get(pk=comment.get('ID'))
+                    del_comment.deleted = True
+                    del_comment.save()
+                    print(f'Updated deleted comment: {comment.body}')
+                except:
+                    print('Skipping deleted thread')
+                    continue
             try:
                 user = User.objects.get(pk=sender['UID'])
             except:

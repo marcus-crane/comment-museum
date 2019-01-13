@@ -9,4 +9,5 @@ urlpatterns = [
     path('user/<int:uid>', views.UserDetailView, name='user_detail.html'),
     path('threads/<int:uid>', views.ThreadListView, name="thread_detail.html"),
     path('positive/', views.PositiveArticleListView.as_view(), name='positive_article_list'),
+    path('generated/<path:pk>', views.GeneratedDetailView, name='generated_detail'),
 ]

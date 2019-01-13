@@ -1,6 +1,7 @@
 from django.db.models import Sum
 from django.views import generic
 from django.shortcuts import render
+import markovify
 
 from archival.models import Article, Comment, User
 
@@ -10,6 +11,21 @@ def ArticleDetailView(request, **kwargs):
         "comments": Comment.objects.filter(article__ident=kwargs.get('pk'))
     }
     return render(request, 'exhibition/article_detail.html', data)
+
+def GeneratedDetailView(request, **kwargs):
+    print('pk', kwargs.get('pk'))
+    comments = {}
+    all_comments = Comment.objects.filter(article=kwargs.get('pk'))
+    comment_corpus = ""
+    for comment in all_comments:
+        comment_corpus += f'{comment.body}\n'
+    text_model = markovify.NewlineText(comment_corpus)
+    num_comments = 30
+    data = {
+        "article": Article.objects.get(pk=kwargs.get('pk')),
+        "comments": [text_model.make_short_sentence(300) for num in range(num_comments)]
+    }
+    return render(request, 'exhibition/generated_detail.html', data)
 
 class ArticleListView(generic.ListView):
     template_name = 'exhibition/article_list.html'
