@@ -10,7 +10,10 @@ services:
     ports:
       - "8000:8000"
     links:
+      - db
       - rabbitmq
+    depends_on:
+      - db
 
   worker:
     restart: always
@@ -19,9 +22,21 @@ services:
     volumes:
       - .:/app
     links:
+      - db
       - rabbitmq
     depends_on:
       - rabbitmq
+
+  db:
+    restart: always
+    image: postgres:latest
+    hostname: db
+    volumes:
+      - ./data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
 
   rabbitmq:
     restart: always
